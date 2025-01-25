@@ -1,44 +1,35 @@
-from typing import List
+from fastapi import FastAPI
 
-from fastapi import FastAPI, HTTPException
-from fastapi.staticfiles import StaticFiles
+from view.actors import router as actors_router
+from view.movies import router as movies_router
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
-import schemas
-import models
 
-app = FastAPI()
+app = FastAPI(
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json"
+)
+
 app.mount("/static", StaticFiles(directory="../ui/build/static", check_dir=False), name="static")
 
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Allowed HTTP methods
+    allow_headers=["*"],
+)
+
+app.include_router(actors_router, prefix="/actors", tags=["actors"])
+app.include_router(movies_router, prefix="/movies", tags=["movies"])
 
 @app.get("/")
 def serve_react_app():
     return FileResponse("../ui/build/index.html")
-
-
-@app.get("/movies", response_model=List[schemas.Movie])
-def get_movies():
-    return list(models.Movie.select())
-
-
-@app.post("/movies", response_model=schemas.Movie)
-def add_movie(movie: schemas.MovieBase):
-    movie = models.Movie.create(**movie.dict())
-    return movie
-
-
-@app.get("/movies/{movie_id}", response_model=schemas.Movie)
-def get_movie(movie_id: int):
-    db_movie = models.Movie.filter(models.Movie.id == movie_id).first()
-    if db_movie is None:
-        raise HTTPException(status_code=404, detail="Movie not found")
-    return db_movie
-
-
-@app.delete("/movies/{movie_id}", response_model=schemas.Movie)
-def get_movie(movie_id: int):
-    db_movie = models.Movie.filter(models.Movie.id == movie_id).first()
-    if db_movie is None:
-        raise HTTPException(status_code=404, detail="Movie not found")
-    db_movie.delete_instance()
-    return db_movie

@@ -12,9 +12,9 @@ class Actor(BaseModel):
 
 class Movie(BaseModel):
     title = CharField()
-    director = CharField()
+    director = CharField(null=True)
     year = IntegerField()
-    description = TextField()
+    description = TextField(null=True)
     actors = ManyToManyField(Actor, backref='movies')
 
 ActorMovie = Movie.actors.get_through_model()

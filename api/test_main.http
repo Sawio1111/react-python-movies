@@ -1,24 +1,11 @@
-POST http://127.0.0.1:8000/movies
-Content-Type: application/json
+# Test your FastAPI endpoints
 
-{
-  "title": "title1",
-  "year": 1923,
-  "director": "director1",
-  "description": ""
-}
-
-###
-
-GET http://127.0.0.1:8000/movies
+GET http://127.0.0.1:8000/
 Accept: application/json
 
 ###
 
-GET http://127.0.0.1:8000/movies/7
+GET http://127.0.0.1:8000/hello/User
 Accept: application/json
 
 ###
-
-DELETE http://127.0.0.1:8000/movies/5
-Accept: application/json
