@@ -1,0 +1,20 @@
+services:
+  qdrant:
+    container_name: dblab3_qdrant
+    image: qdrant/qdrant:v1.7.2
+    ports:
+      - 6333:6333
+
+  app:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - qdrant
+    volumes:
+      - app_data:/var/lib/postgres/data
+  
+volumes:
+  app_data:
