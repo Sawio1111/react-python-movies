@@ -1,5 +1,6 @@
 import "milligram";
 import { useEffect, useState } from 'react';
+import { ToastContainer } from "react-toastify";
 
 import './App.css';
 import { Titles } from './Titles';
@@ -79,6 +80,7 @@ const App = () => {
             </>
             : null}
           </div>
+          <ToastContainer />
       </div>
   );
 }

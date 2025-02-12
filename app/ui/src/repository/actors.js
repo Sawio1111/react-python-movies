@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const AddActor = async (actor, actors, setActors) => {
     const response = await fetch('/actors', {
         method: 'POST',
@@ -7,9 +9,9 @@ export const AddActor = async (actor, actors, setActors) => {
     if (response.ok) {
         const newActor = await response.json();
         setActors([...actors, newActor]);
-        alert('Actor added successfully');
+        toast.success('Actor added successfully');
     } else {
-        alert('Failed to add actor');
+        toast.error('Failed to add actor');
     }
 };
 
@@ -22,7 +24,7 @@ export const GetActors = async (setActors) => {
         const allActors = await response.json();
         setActors(allActors);
     } else {
-        alert('Failed to fetch actors');
+        toast.error('Failed to fetch actors');
     }
 };
 
@@ -35,8 +37,8 @@ export const DeleteActor = async (id, actors, setActors) => {
     if (response.ok) {
         const deleteActor = await response.json();
         setActors(actors.filter(actor => actor.id !== deleteActor.id));
-        alert('Actor deleted successfully');
+        toast.success('Actor deleted successfully');
     } else {
-        alert('Failed to delete actor');
+        toast.error('Failed to delete actor');
     }
 };

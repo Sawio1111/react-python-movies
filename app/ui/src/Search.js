@@ -9,8 +9,10 @@ export const Search = () => {
 
     const handleSearch = async (e) => {
         e.preventDefault()
-        SearchMovies(query, setSMovies)
-        setQuery("")
+        if (query.length > 0) {
+            SearchMovies(query, setSMovies)
+            setQuery("")
+        }
     }
 
     return (

@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const AddMovie = async (movie, movies, setMovies) => {
     const response = await fetch('/movies', {
         method: 'POST',
@@ -7,9 +9,9 @@ export const AddMovie = async (movie, movies, setMovies) => {
     if (response.ok) {
         const newMovie = await response.json();
         setMovies([...movies, newMovie]);
-        alert('Movie added successfully');
+        toast.success('Movie added successfully');
     } else {
-        alert('Failed to add movie');
+        toast.error('Failed to add movie');
     }
 }
 
@@ -22,7 +24,7 @@ export const GetMovies = async (setMovies) => {
         const allMovies = await response.json();
         setMovies(allMovies);
     } else {
-        alert('Failed to fetch movies');
+        toast.error('Failed to fetch movies');
     }
 };
 
@@ -35,9 +37,9 @@ export const DeleteMovie = async (id, movies, setMovies) => {
     if (response.ok) {
         const deleteMovie = await response.json();
         setMovies(movies.filter(movie => movie.id !== deleteMovie.id));
-        alert('Movie deleted successfully');
+        toast.success('Movie deleted successfully');
     } else {
-        alert('Failed to delete movie');
+        toast.error('Failed to delete movie');
     }
 };
 
@@ -49,9 +51,9 @@ export const AttachActorToMovie = async (movieId, actorId, movies, setMovies) =>
     if (response.ok) {
         const updatedMovie = await response.json();
         setMovies(movies.map(movie => movie.id === updatedMovie.id ? updatedMovie : movie));
-        alert('Actor attached to movie successfully');
+        toast.success('Actor attached to movie successfully');
     } else {
-        alert('Failed to attach actor to movie');
+        toast.error('Failed to attach actor to movie');
     }
 };
 
@@ -63,8 +65,8 @@ export const SearchMovies = async (query, setSMovies) => {
     if (response.ok) {
         const searchResults = await response.json();
         setSMovies(searchResults);
-        alert('Movies searched successfully');
+        toast.success('Movies searched successfully');
     } else {
-        alert('Failed to search movies');
+        toast.error('Failed to search movies');
     }
 };
